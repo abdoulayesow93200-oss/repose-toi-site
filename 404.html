@@ -54,6 +54,20 @@
   document.getElementById('accueil').href = base;
 
   var chemin = decodeURIComponent(location.pathname).toLowerCase();
+
+  // SUPPRESSION DE COMPTE, avant tout le reste.
+  //
+  // L'URL declaree dans la fiche Securite des donnees de Google Play est
+  // /DeleteAccount, servie par un vrai fichier DeleteAccount.html. Les
+  // variantes tombent ici : /deleteaccount en minuscules, /DeleteAccount/
+  // avec un slash final, ou toute autre casse. On les renvoie sur la PAGE,
+  // jamais sur l'accueil : une demande de suppression de compte ne doit pas
+  // se perdre, et Google verifie cette URL.
+  if (chemin.indexOf('deleteaccount') !== -1 || chemin.indexOf('supprimer') !== -1) {
+    location.replace(base + 'DeleteAccount.html');
+    return;
+  }
+
   var veutApp = chemin.indexOf('download') !== -1 || chemin.indexOf('telecharger') !== -1;
 
   if (!veutApp) {
